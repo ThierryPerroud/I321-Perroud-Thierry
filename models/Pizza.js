@@ -2,10 +2,10 @@
 const db = require('../config/database');
 
 class Pizza {
-    static create({ name, description, imageUrl, price }) {
-        const sql = `INSERT INTO products (name, description, imageUrl, price, created_at, updated_at)
+    static create({ title, ingredients, image, price }) {
+        const sql = `INSERT INTO pizzas (title, ingredients, image, price, created_at, updated_at)
                  VALUES (?, ?, ?, ?, datetime('now'), datetime('now'))`;
-        const params = [name, description || null, imageUrl || null, price];
+        const params = [title, ingredients || null, image || null, price];
 
         return new Promise((resolve, reject) => {
             db.run(sql, params, function (err) {
@@ -17,7 +17,7 @@ class Pizza {
     }
 
     static findAll() {
-        const sql = `SELECT * FROM products ORDER BY id DESC`;
+        const sql = `SELECT * FROM pizzas ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.all(sql, [], (err, rows) => {
                 if (err) return reject(err);
@@ -27,7 +27,7 @@ class Pizza {
     }
 
     static findById(id) {
-        const sql = `SELECT * FROM products WHERE id = ?`;
+        const sql = `SELECT * FROM pizzas WHERE id = ?`;
         return new Promise((resolve, reject) => {
             db.get(sql, [id], (err, row) => {
                 if (err) return reject(err);
@@ -36,17 +36,17 @@ class Pizza {
         });
     }
 
-    static update(id, { name, description, imageUrl, price }) {
+    static update(id, { title, ingredients, image, price }) {
         const sql = `
-      UPDATE products
-      SET name = COALESCE(?, name),
-          description = COALESCE(?, description),
-          imageUrl = COALESCE(?, imageUrl),
+      UPDATE pizzas
+      SET title = COALESCE(?, title),
+          ingredients = COALESCE(?, ingredients),
+          image = COALESCE(?, image),
           price = COALESCE(?, price),
           updated_at = datetime('now')
       WHERE id = ?
     `;
-        const params = [name, description, imageUrl, price, id];
+        const params = [title, ingredients, image, price, id];
 
         return new Promise((resolve, reject) => {
             db.run(sql, params, function (err) {
@@ -58,7 +58,7 @@ class Pizza {
     }
 
     static delete(id) {
-        const sql = `DELETE FROM products WHERE id = ?`;
+        const sql = `DELETE FROM pizzas WHERE id = ?`;
         return new Promise((resolve, reject) => {
             db.run(sql, [id], function (err) {
                 if (err) return reject(err);
