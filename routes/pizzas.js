@@ -1,7 +1,7 @@
-// routes/products.js
+// routes/pizzas.js
 const express = require('express');
 const { body, param } = require('express-validator');
-const productController = require('../controllers/productController');
+const pizzasController = require('../controllers/pizzasController');
 
 const router = express.Router();
 
@@ -168,16 +168,16 @@ const router = express.Router();
  * Validation rules
  */
 const createAndUpdateValidations = [
-    body('name').isString().notEmpty().withMessage('name is required'),
-    body('description').optional().isString(),
-    body('imageUrl').optional().isString().isURL().withMessage('imageUrl must be a valid URL'),
+    body('title').isString().notEmpty().withMessage('name is required'),
+    body('image').optional().isString().isURL().withMessage('imageUrl must be a valid URL'),
+    body('ingredients').optional().isString().isArray({min: 0}),
     body('price').isFloat({ gt: 0 }).withMessage('price must be a positive number'),
 ];
 
-router.get('/', productController.findAll);
-router.post('/', createAndUpdateValidations, productController.create);
-router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], productController.findOne);
-router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), ...createAndUpdateValidations], productController.update);
-router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], productController.delete);
+router.get('/', pizzasController.findAll);
+router.post('/', createAndUpdateValidations, pizzasController.create);
+router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], pizzasController.findOne);
+router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), ...createAndUpdateValidations], pizzasController.update);
+router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], pizzasController.delete);
 
 module.exports = router;

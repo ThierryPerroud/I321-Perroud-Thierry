@@ -1,22 +1,22 @@
 @startuml
-title Products API - Class Diagram
+title Pizzas API - Class Diagram
 
-class Product {
+class Pizza {
   +int id
-  +string name
-  +string description
+  +string title
+  +string ingredients
   +string imageUrl
   +float price
   +string created_at
   +string updated_at
-  +static create(obj) : Promise<Product>
-  +static findAll() : Promise<Product[]>
-  +static findById(id) : Promise<Product|null>
-  +static update(id, obj) : Promise<Product|null>
+  +static create(obj) : Promise<Pizza>
+  +static findAll() : Promise<Pizza[]>
+  +static findById(id) : Promise<Pizza|null>
+  +static update(id, obj) : Promise<Pizza|null>
   +static delete(id) : Promise<number>
 }
 
-class ProductController {
+class PizzasController {
   +create(req, res)
   +findAll(req, res)
   +findOne(req, res)
@@ -25,14 +25,14 @@ class ProductController {
 }
 
 class Router {
-  +GET /api/products
-  +POST /api/products
-  +GET /api/products/:id
-  +PUT /api/products/:id
-  +DELETE /api/products/:id
+  +GET /api/pizzas
+  +POST /api/pizzas
+  +GET /api/pizzas/:id
+  +PUT /api/pizzas/:id
+  +DELETE /api/pizzas/:id
 }
 
-ProductController -- Product : uses >
-Router --> ProductController : routes to >
+PizzasController -- Pizza : uses >
+Router --> PizzasController : routes to >
 
 @enduml

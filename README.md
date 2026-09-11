@@ -40,13 +40,13 @@ A simple RESTful API to manage products (CRUD) built with **Express**, **SQLite3
     │       swagger.js
     │
     ├───controllers
-    │       productController.js
+    │       pizzasController.js
     │
     ├───models
-    │       Product.js
+    │       Pizza.js
     │
     └───routes
-            products.js
+            pizzas.js
             router.js
 ```
 
