@@ -23,31 +23,32 @@ A simple RESTful API to manage products (CRUD) built with **Express**, **SQLite3
 ```bash
 │   .env
 │   .gitignore
+│   app.js
 │   dev.sqlite
-│   package-lock.json
 │   package.json
+│   package-lock.json
 │   README.md
+│   server.js
+│
+├───config
+│       database.js
+│       swagger.js
 │
 ├───docs
 │       class_diagram.puml
 │
-└───src
-    │   app.js
-    │   server.js
-    │
-    ├───config
-    │       database.js
-    │       swagger.js
-    │
-    ├───controllers
-    │       pizzasController.js
-    │
-    ├───models
-    │       Pizza.js
-    │
-    └───routes
-            pizzas.js
-            router.js
+├───controllers
+│       ingredientsController.js
+│       pizzasController.js
+│
+├───models
+│       Ingredients.js
+│       Pizza.js
+│
+└───routes
+        ingredients.js
+        pizzas.js
+        router.js
 ```
 
 ## Installation

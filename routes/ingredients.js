@@ -1,43 +1,37 @@
 // routes/pizzas.js
 const express = require('express');
 const { body, param } = require('express-validator');
-const pizzasController = require('../controllers/pizzasController');
+const ingredientsController = require('../controllers/ingredientsController');
 
 const router = express.Router();
 
 /**
  * @openapi
- * /api/pizzas:
+ * /api/ingredientss:
  *   get:
- *     summary: Retrieve a list of pizzas
+ *     summary: Retrieve a list of ingredients
  *     responses:
  *       200:
- *         description: A list of pizzas
+ *         description: A list of ingredients
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               required:
- *                 - title
+ *                 - name
  *                 - price
  *               properties:
  *                 id:
  *                   type: integer
  *                   example: 1
- *                 title:
+ *                 name:
  *                   type: string
- *                   example: "Margherita"
- *                 image:
- *                   type: string
- *                   example: null
- *                 ingredients:
- *                   type: [string]
- *                   example: ["Tomato", "Mozarella", "Basil"]
+ *                   example: "Jambon"
  *                 price:
  *                   type: number
- *                   example: 8.5
+ *                   example: 3.5
  *   post:
- *     summary: Create a new pizza
+ *     summary: Create a new ingredient
  *     requestBody:
  *       required: true
  *       content:
@@ -45,7 +39,7 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               required:
- *                 - title
+ *                 - name
  *                 - price
  *               properties:
  *                 id:
@@ -53,28 +47,22 @@ const router = express.Router();
  *                   example: 1
  *                 title:
  *                   type: string
- *                   example: "Margherita"
- *                 image:
- *                   type: string
- *                   example: null
- *                 ingredients:
- *                   type: [string]
- *                   example: ["Tomato", "Mozarella", "Basil"]
+ *                   example: "Jambon"
  *                 price:
  *                   type: number
- *                   example: 8.5
+ *                   example: 3.5
  *     responses:
  *       201:
- *         description: Pizza created
+ *         description: Ingredient created
  *       400:
  *         description: Invalid input
  */
 
 /**
  * @openapi
- * /api/pizzas/{id}:
+ * /api/ingredients/{id}:
  *   get:
- *     summary: Get a pizza by ID
+ *     summary: Get an ingredient by ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -83,34 +71,28 @@ const router = express.Router();
  *           type: integer
  *     responses:
  *       200:
- *         description: Pizza object
+ *         description: Ingredient object
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               required:
- *                 - title
+ *                 - name
  *                 - price
  *               properties:
  *                 id:
  *                   type: integer
  *                   example: 1
- *                 title:
+ *                 name:
  *                   type: string
- *                   example: "Margherita"
- *                 image:
- *                   type: string
- *                   example: null
- *                 ingredients:
- *                   type: [string]
- *                   example: ["Tomato", "Mozarella", "Basil"]
+ *                   example: "Jambon"
  *                 price:
  *                   type: number
- *                   example: 8.5
+ *                   example: 3.5
  *       404:
- *         description: Pizza not found
+ *         description: Ingredient not found
  *   put:
- *     summary: Update a Pizza by ID
+ *     summary: Update an Ingredient by ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -124,33 +106,27 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               required:
- *                 - title
+ *                 - name
  *                 - price
  *               properties:
  *                 id:
  *                   type: integer
  *                   example: 1
- *                 title:
+ *                 name:
  *                   type: string
- *                   example: "Margherita"
- *                 image:
- *                   type: string
- *                   example: null
- *                 ingredients:
- *                   type: [string]
- *                   example: ["Tomato", "Mozarella", "Basil"]
+ *                   example: "Jambon"
  *                 price:
  *                   type: number
- *                   example: 8.5
+ *                   example: 3.5
  *     responses:
  *       200:
- *         description: Pizza updated
+ *         description: Ingredient updated
  *       400:
  *         description: Invalid input
  *       404:
- *         description: Pizza not found
+ *         description: Ingredient not found
  *   delete:
- *     summary: Delete a pizza
+ *     summary: Delete an ingredient
  *     parameters:
  *       - in: path
  *         name: id
@@ -159,25 +135,23 @@ const router = express.Router();
  *           type: integer
  *     responses:
  *       204:
- *         description: Pizza deleted
+ *         description: Ingredient deleted
  *       404:
- *         description: Pizza not found
+ *         description: Ingredient not found
  */
 
 /**
  * Validation rules
  */
 const createAndUpdateValidations = [
-    body('title').isString().notEmpty().withMessage('title is required'),
-    body('image').optional().isString().isURL().withMessage('image must be a valid URL'),
-    body('ingredients').optional().isString().isArray({min: 0}),
+    body('name').isString().notEmpty().withMessage('name is required'),
     body('price').isFloat({ gt: 0 }).withMessage('price must be a positive number'),
 ];
 
-router.get('/', pizzasController.findAll);
-router.post('/', createAndUpdateValidations, pizzasController.create);
-router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], pizzasController.findOne);
-router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), ...createAndUpdateValidations], pizzasController.update);
-router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], pizzasController.delete);
+router.get('/', ingredientsController.findAll);
+router.post('/', createAndUpdateValidations, ingredientsController.create);
+router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], ingredientsController.findOne);
+router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), ...createAndUpdateValidations], ingredientsController.update);
+router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], ingredientsController.delete);
 
 module.exports = router;
