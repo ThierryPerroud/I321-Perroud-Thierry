@@ -1,11 +1,24 @@
 @startuml
 title Pizzas API - Class Diagram
 
+class Ingredient {
+  +int id
+  +string name
+  +float price
+  +string created_at
+  +string updated_at
+  +static create(obj) : Promise<Ingredient>
+  +static findAll() : Promise<Ingredient[]>
+  +static findById(id) : Promise<Ingredient|null>
+  +static update(is, obj) : Promise<Pizza|null>
+  +static delete(id) : Promise<number>
+}
+
 class Pizza {
   +int id
   +string title
   +string ingredients
-  +string imageUrl
+  +string image
   +float price
   +string created_at
   +string updated_at
@@ -14,6 +27,14 @@ class Pizza {
   +static findById(id) : Promise<Pizza|null>
   +static update(id, obj) : Promise<Pizza|null>
   +static delete(id) : Promise<number>
+}
+
+class IngredientsController {
+  +create(req, res)
+  +findAll(req, res)
+  +findOne(req, res)
+  +update(req, res)
+  +delete(req, res)
 }
 
 class PizzasController {
@@ -25,12 +46,20 @@ class PizzasController {
 }
 
 class Router {
+  +GET /api/ingredients
+  +POST /api/ingredients
+  +GET /api/ingredients/:id
+  +PUT /api/ingredients/:id
+  +DELETE /api/ingredients/:id
   +GET /api/pizzas
   +POST /api/pizzas
   +GET /api/pizzas/:id
   +PUT /api/pizzas/:id
   +DELETE /api/pizzas/:id
 }
+
+IngredientsController -- Ingredient : uses >
+Router --> IngredientsController : routes to >
 
 PizzasController -- Pizza : uses >
 Router --> PizzasController : routes to >
