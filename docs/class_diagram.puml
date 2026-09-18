@@ -10,7 +10,7 @@ class Ingredient {
   +static create(obj) : Promise<Ingredient>
   +static findAll() : Promise<Ingredient[]>
   +static findById(id) : Promise<Ingredient|null>
-  +static update(is, obj) : Promise<Pizza|null>
+  +static update(is, obj) : Promise<Ingredient|null>
   +static delete(id) : Promise<number>
 }
 
@@ -27,6 +27,11 @@ class Pizza {
   +static findById(id) : Promise<Pizza|null>
   +static update(id, obj) : Promise<Pizza|null>
   +static delete(id) : Promise<number>
+}
+
+class PizzaHasIngredient {
+  +int pizza_id
+  +int ingredient_id
 }
 
 class IngredientsController {
@@ -62,6 +67,11 @@ IngredientsController -- Ingredient : uses >
 Router --> IngredientsController : routes to >
 
 PizzasController -- Pizza : uses >
+PizzasController -- PizzaHasIngredient : uses >
+PizzasController -- IngredientsController : asks >
 Router --> PizzasController : routes to >
+
+Ingredient -- PizzaHasIngredient : is in >
+Pizza -- PizzaHasIngredient : has >
 
 @enduml

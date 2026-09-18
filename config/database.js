@@ -34,8 +34,19 @@ CREATE TABLE IF NOT EXISTS pizzas (
   price REAL NOT NULL,
   created_at TEXT DEFAULT (datetime('now')),
   updated_at TEXT DEFAULT (datetime('now'))
-);
-`;
+);`
+
+// Initialize pizza_has_ingredient table if not exists
+const initPizzaHasIngredientSql = `
+CREATE TABLE IF NOT EXISTS pizza_has_ingredient (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  pizza_id INTEGER NOT NULL,
+  ingredient_id INTEGER NOT NULL,
+  FOREIGN KEY (pizza_id)
+    REFERENCES pizzas (id),
+  FOREIGN KEY (ingredient_id)
+    REFERENCES ingredients (id)
+);`
 
 
 
@@ -47,6 +58,12 @@ db.serialize(() => {
         }
     });
     db.run(initPizzasSql, (err) => {
+        if (err) {
+            console.error('Failed to initialize database', err);
+            process.exit(1);
+        }
+    });
+    db.run(initPizzaHasIngredientSql, (err) => {
         if (err) {
             console.error('Failed to initialize database', err);
             process.exit(1);
