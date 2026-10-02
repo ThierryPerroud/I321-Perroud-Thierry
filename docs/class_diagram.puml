@@ -1,66 +1,72 @@
 @startuml
 title Pizzas API - Class Diagram
 
-class Ingredient {
-  +int id
-  +string name
-  +float price
-  +string created_at
-  +string updated_at
-  +static create(obj) : Promise<Ingredient>
-  +static findAll() : Promise<Ingredient[]>
-  +static findById(id) : Promise<Ingredient|null>
-  +static update(is, obj) : Promise<Ingredient|null>
-  +static delete(id) : Promise<number>
+package "Presentation Layer" {
+    class Router {
+      +GET /api/ingredients
+      +POST /api/ingredients
+      +GET /api/ingredients/:id
+      +PUT /api/ingredients/:id
+      +DELETE /api/ingredients/:id
+      +GET /api/pizzas
+      +POST /api/pizzas
+      +GET /api/pizzas/:id
+      +PUT /api/pizzas/:id
+      +DELETE /api/pizzas/:id
+    }
 }
 
-class Pizza {
-  +int id
-  +string title
-  +string ingredients
-  +string image
-  +float price
-  +string created_at
-  +string updated_at
-  +static create(obj) : Promise<Pizza>
-  +static findAll() : Promise<Pizza[]>
-  +static findById(id) : Promise<Pizza|null>
-  +static update(id, obj) : Promise<Pizza|null>
-  +static delete(id) : Promise<number>
+package "Business Layer" {
+    class PizzasController {
+      +create(req, res)
+      +findAll(req, res)
+      +findOne(req, res)
+      +update(req, res)
+      +delete(req, res)
+    }
+
+    class IngredientsController {
+      +create(req, res)
+      +findAll(req, res)
+      +findOne(req, res)
+      +update(req, res)
+      +delete(req, res)
+    }
 }
 
-class PizzaHasIngredient {
-  +int pizza_id
-  +int ingredient_id
-}
+package "Data Layer" {
+    class Pizza {
+      +int id
+      +string title
+      +string ingredients
+      +string image
+      +float price
+      +string created_at
+      +string updated_at
+      +static create(obj) : Promise<Pizza>
+      +static findAll() : Promise<Pizza[]>
+      +static findById(id) : Promise<Pizza|null>
+      +static update(id, obj) : Promise<Pizza|null>
+      +static delete(id) : Promise<number>
+    }
 
-class IngredientsController {
-  +create(req, res)
-  +findAll(req, res)
-  +findOne(req, res)
-  +update(req, res)
-  +delete(req, res)
-}
+    class Ingredient {
+      +int id
+      +string name
+      +float price
+      +string created_at
+      +string updated_at
+      +static create(obj) : Promise<Ingredient>
+      +static findAll() : Promise<Ingredient[]>
+      +static findById(id) : Promise<Ingredient|null>
+      +static update(is, obj) : Promise<Ingredient|null>
+      +static delete(id) : Promise<number>
+    }
 
-class PizzasController {
-  +create(req, res)
-  +findAll(req, res)
-  +findOne(req, res)
-  +update(req, res)
-  +delete(req, res)
-}
-
-class Router {
-  +GET /api/ingredients
-  +POST /api/ingredients
-  +GET /api/ingredients/:id
-  +PUT /api/ingredients/:id
-  +DELETE /api/ingredients/:id
-  +GET /api/pizzas
-  +POST /api/pizzas
-  +GET /api/pizzas/:id
-  +PUT /api/pizzas/:id
-  +DELETE /api/pizzas/:id
+    class PizzaHasIngredient {
+      +int pizza_id
+      +int ingredient_id
+    }
 }
 
 IngredientsController -- Ingredient : uses >
@@ -68,10 +74,10 @@ Router --> IngredientsController : routes to >
 
 PizzasController -- Pizza : uses >
 PizzasController -- PizzaHasIngredient : uses >
-PizzasController -- IngredientsController : asks >
+PizzasController -- IngredientsController : validates ingredients >
 Router --> PizzasController : routes to >
 
-Ingredient -- PizzaHasIngredient : is in >
-Pizza -- PizzaHasIngredient : has >
+Ingredient -- PizzaHasIngredient : 0..* 1
+Pizza -- PizzaHasIngredient : 0..* 1
 
 @enduml
